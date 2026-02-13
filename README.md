@@ -1,14 +1,14 @@
 # Task Management API
 
-> A RESTful API built with NestJS for managing tasks with MongoDB integration and in-memory fallback support.
+> A RESTful API built with NestJS for managing tasks with MongoDB integration and if MongoDB is not available, it will use in-memory storage.
 
-**Short Summary:** During the development process, I used AI tools to write the unit tests, implemented a fallback repository pattern to ensure architectural flexibility and also creating this README.md file's structure. Previously, I built layered architecture project in Express.js where I manually handled Dependency Injection (DI) this time I decided to try NestJS. NestJS's IoC system provides automatically managing DI and Providers. My background in Java Spring, Express.js and TypeScript allowed me to quickly adapt to NestJS core concepts. While the project wasn't challenging, it provided a valuable opportunity to get familiar with the NestJS ecosystem.
+**Short Summary:** During the development process, I used AI tools to write the unit tests, implemented a fallback repository pattern to ensure architectural flexibility and also creating this README.md file's structure. Previously, I built layered architecture projects in Express.js where I manually handled Dependency Injection (DI) this time I decided to try NestJS. NestJS's IoC system provides automatically managing DI and Providers. My background in Java Spring, Express.js and TypeScript allowed me to quickly adapt to NestJS core concepts. While the project wasn't challenging, it provided a valuable opportunity to get familiar with the NestJS ecosystem.
 
 I followed this plan to implement this api:
 
 1.day: Read NestJS documentation and understand the core concepts.
 2.day: Implement the layered architecure (Controller, Service, Repository, MongoDB implementation).
-3.day: Implement the fallback repository pattern, test endpoints via Postman, create unit tests and add Docker support.
+3.day: Implement the fallback repository pattern, create unit tests and add Docker support.
 
 **Note**: All endpoints are validated using Postman to ensure system reliability.
 
@@ -209,10 +209,7 @@ docker build -t task-management-api .
 ### Run Container
 
 ```bash
-docker run -p 3000:3000 \
-  -e PORT=3000 \
-  --env-file .env.development or .env \
-  task-management-api
+docker run -p 3000:3000 -e PORT=3000 --env-file .env.development task-management-api
 ```
 
 ## Project Structure
@@ -245,7 +242,7 @@ task-management-api/
 │   │   └── task.module.ts
 │   ├── app.module.ts
 │   └── main.ts
-├── .env
+├── .env.development
 ├── .dockerignore
 ├── Dockerfile
 ├── package.json
