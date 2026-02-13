@@ -3,6 +3,7 @@ import { Task } from "src/task/entity/task.entity";
 
 export abstract class ITaskRepository {
 
-    abstract create(task: CreateTaskDto): Promise<Task>;
+    abstract create(task: CreateTaskDto): Promise<Task | null>;
     abstract getAllTasks(): Promise<Task[]>;
+    abstract findOne(title: string): Promise<Task | null>;
 }
