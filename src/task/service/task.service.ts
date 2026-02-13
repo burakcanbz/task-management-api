@@ -1,18 +1,11 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { CreateTaskDto } from "src/task/dto/create-task.dto";
-import { Task } from "src/task/entity/task.entity";
-import { InMemoryTask } from "../entity/in-memory-task.entity";
-import { ITaskRepository } from "src/task/interfaces/task.interface";
-import { Model } from "mongoose";
-import { HydratedDocument } from "mongoose";
-import { ResponseMessageDto } from "src/task/dto/response-message.dto";
+import { CreateTaskDto } from "../dto/create-task.dto";
+import { ITaskRepository } from "../interfaces/task.interface";
+import { ResponseMessageDto } from "../dto/response-message.dto";
 
 
 @Injectable()
 export class TaskService {
-    private inMemoryTasks: InMemoryTask[] = [];
-    private dbAvailable = true;
     // Defining constructor parameters as private means that we are using dependency injection and also defining a property as private so we can use it with this keyword.
     constructor(private readonly taskRepository: ITaskRepository) {
     }

@@ -1,9 +1,9 @@
 import { ResponseTaskDto } from "./response-task.dto";
 
-export interface ResponseMessageDto {
+export interface ResponseMessageDto<T = any> {
     success: boolean;
     error: boolean;
     statusCode: number;
     message: string;
-    data: ResponseTaskDto | ResponseTaskDto[];
+    data: T | T[];
 }
