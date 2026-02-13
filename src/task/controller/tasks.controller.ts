@@ -10,14 +10,11 @@ export class TaskController {
 
     @Get()
     getAllTasks() {
-        console.log("getting all tasks");
         return this.taskService.getAllTasks();
     }
 
     @Post()
     createTask(@Body() createTaskDto: CreateTaskDto) {
-        console.log(createTaskDto);
-        console.log("creating task");
         return this.taskService.createTask(createTaskDto);
     }
 }
