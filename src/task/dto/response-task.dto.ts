@@ -1,4 +1,4 @@
-export class ResponseTaskDto {
+export interface ResponseTaskDto {
 
     title: string;
     completed: boolean;

@@ -1,6 +1,6 @@
 import { ResponseTaskDto } from "./response-task.dto";
 
-export class ResponseMessageDto {
+export interface ResponseMessageDto {
     success: boolean;
     error: boolean;
     statusCode: number;
