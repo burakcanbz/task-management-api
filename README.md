@@ -1,98 +1,321 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Task Management API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> A RESTful API built with NestJS for managing tasks with MongoDB integration and in-memory fallback support.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**Short Summary:** During the development process, I used AI tools to write the unit tests, implemented a fallback repository pattern to ensure architectural flexibility and also creating this readme.md file's structure. Previously, I built layered architecture project in Express.js where I manually handled Dependency Injection (DI) this time I decided to try NestJS. NestJS's IoC system provides automatically managing DI and Providers. My background in Java Spring, Express.js and TypeScript allowed me to quickly adapt to NestJS core concepts. While the project wasn't challenging, it provided a valuable opportunity to get familiar with the NestJS ecosystem.
 
-## Description
+**Note**: All endpoints are validated using Postman to ensure system reliability.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
 
-## Project setup
+- **CRUD Operations** - Create and retrieve tasks
+- **MongoDB Integration** - Persistent storage with Mongoose
+- **In-Memory Fallback** - Automatic fallback when database is unavailable
+- **Input Validation** - Request validation using class-validator
+- **Global Exception Handling** - Centralized error handling
+- **Docker Support** - Containerized deployment
+- **Unit Tests** - Comprehensive test coverage
+- **TypeScript** - Full type safety
 
-```bash
-$ pnpm install
-```
+## Table of Contents
 
-## Compile and run the project
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Technologies](#technologies)
+- [Running the Application](#running-the-application)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Docker Deployment](#docker-deployment)
+- [Project Structure](#project-structure)
 
-```bash
-# development
-$ pnpm run start
+## Prerequisites
 
-# watch mode
-$ pnpm run start:dev
+- **Node.js** >= 18.x
+- **pnpm** >= 8.x
+- **MongoDB** (optional - falls back to in-memory storage)
+- **Docker** (optional - for containerized deployment)
 
-# production mode
-$ pnpm run start:prod
-```
-
-## Run tests
+## Installation
 
 ```bash
-# unit tests
-$ pnpm run test
+# Clone the repository
+git clone <repository-url>
+cd task-management-api
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# Install dependencies
+pnpm install
 ```
 
-## Deployment
+## Configuration
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Create a `.env.development` file in the root directory:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env.development
+PORT=3000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/task-management-api?retryWrites=true&w=majority
+```
+
+### Environment Variables
+
+| Variable    | Description               | Default  |
+| ----------- | ------------------------- | -------- |
+| `PORT`      | Server port               | `3000`   |
+| `MONGO_URI` | MongoDB connection string | Optional |
+
+> **Note:** If `MONGO_URI` is not provided, the API will use in-memory storage.
+
+## Running the Application
+
+### Development Mode
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Start with hot-reload
+pnpm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Production Mode
 
-## Resources
+```bash
+# Build the application
+pnpm run build
 
-Check out a few resources that may come in handy when working with NestJS:
+# Start production server
+pnpm run start:prod
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Debug Mode
 
-## Support
+```bash
+pnpm run start:debug
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+The API will be available at `http://localhost:3000`
 
-## Stay in touch
+## 📡 API Endpoints
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Base URL
 
-## License
+```
+http://localhost:3000
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Endpoints
+
+#### Get All Tasks
+
+```http
+GET /tasks
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "error": false,
+  "statusCode": 200,
+  "message": "Tasks fetched successfully",
+  "data": [
+    {
+      "title": "Sample Task",
+      "completed": false,
+      "createdAt": "timestamp"
+    }
+  ]
+}
+```
+
+#### Create Task
+
+```http
+POST /tasks
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "title": "New Task",
+  "completed": false
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "error": false,
+  "statusCode": 201,
+  "message": "Task created successfully",
+  "data": {
+    "title": "New Task",
+    "completed": false,
+    "createdAt": "timestamp"
+  }
+}
+```
+
+**Error Response (Duplicate Task):**
+
+```json
+{
+  "success": false,
+  "error": true,
+  "statusCode": 400,
+  "timestamp": "timestamp",
+  "path": "path",
+  "message": "Task already exists 'Repository Name'"
+}
+```
+
+## Testing
+
+```bash
+# Run unit tests
+pnpm run test
+
+# Run tests in watch mode
+pnpm run test:watch
+
+# Generate test coverage
+pnpm run test:cov
+
+```
+
+### Test Coverage
+
+The project includes comprehensive unit tests for:
+
+- **TaskService** - Business logic testing
+- **TaskController** - HTTP endpoint testing
+
+## Docker Deployment
+
+### Build Docker Image
+
+```bash
+docker build -t task-management-api .
+```
+
+### Run Container
+
+```bash
+docker run -p 3000:3000 \
+  -e PORT=3000 \
+  --env-file .env.development or .env \
+  task-management-api
+```
+
+## Project Structure
+
+```
+task-management-api/
+├── src/
+│   ├── common/
+│   │   └── filters/
+│   │       └── all-exceptions.filters.ts
+│   ├── task/
+│   │   ├── controller/
+│   │   │   ├── task.controller.ts
+│   │   │   └── task.controller.spec.ts
+│   │   ├── dto/
+│   │   │   ├── create-task.dto.ts
+│   │   │   ├── response-message.dto.ts
+│   │   │   └── response-task.dto.ts
+│   │   ├── entity/
+│   │   │   ├── task.entity.ts
+│   │   │   └── in-memory-task.entity.ts
+│   │   ├── interfaces/
+│   │   │   └── task.interface.ts
+│   │   ├── repository/
+│   │   │   ├── mongo-tasks.repository.ts
+│   │   │   └── in-memory-tasks.repository.ts
+│   │   ├── service/
+│   │   │   ├── task.service.ts
+│   │   │   └── task.service.spec.ts
+│   │   └── task.module.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── .env
+├── .dockerignore
+├── Dockerfile
+├── package.json
+└── README.md
+```
+
+## Technologies
+
+### Core
+
+- **[NestJS](https://nestjs.com/)** - Progressive Node.js framework
+- **[TypeScript](https://www.typescriptlang.org/)** - Typed JavaScript
+- **[Node.js](https://nodejs.org/)** - Runtime environment
+
+### Database
+
+- **[MongoDB](https://www.mongodb.com/)** - NoSQL database
+- **[Mongoose](https://mongoosejs.com/)** - MongoDB ODM
+
+### Validation & Transformation
+
+- **[class-validator](https://github.com/typestack/class-validator)** - Decorator-based validation
+- **[class-transformer](https://github.com/typestack/class-transformer)** - Object transformation
+
+### Testing
+
+- **[Jest](https://jestjs.io/)** - Testing framework
+- **[Supertest](https://github.com/visionmedia/supertest)** - HTTP assertions
+
+## Architecture
+
+The application follows a **layered architecture** pattern:
+
+```
+Controller Layer → Service Layer → Repository Layer → Database
+```
+
+- **Controller**: Handles HTTP requests and responses
+- **Service**: Contains business logic
+- **Repository**: Abstracts data access (MongoDB or In-Memory)
+- **DTO**: Data Transfer Objects for validation
+
+### Repository Pattern
+
+The app uses the **Repository Pattern** with two implementations:
+
+1. `MongoTaskRepository` - MongoDB persistence
+2. `InMemoryTaskRepository` - In-memory fallback
+
+The active repository is determined at runtime based on MongoDB availability.
+
+## API Response Format
+
+All endpoints follow a consistent response structure:
+
+```typescript
+{
+  success: boolean;      // Operation success status
+  error: boolean;        // Error flag
+  statusCode: number;    // HTTP status code
+  message: string;       // Human-readable message
+  data: T | T[];        // Response payload
+}
+```
+
+## Error Handling
+
+The API includes a global exception filter that catches all errors and returns a standardized error response:
+
+```json
+{
+  "success": false,
+  "error": true,
+  "statusCode": 400,
+  "timestamp": "timestamp",
+  "path": "path",
+  "message": "Error description"
+}
+```
